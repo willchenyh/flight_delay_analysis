@@ -17,14 +17,12 @@ df = pd.concat(l, ignore_index=True)
 #drop the not used column
 df.drop('Unnamed: 22', axis=1, inplace=True)
 df = df.dropna(subset=['DEP_TIME','DEP_DELAY','ARR_TIME','ARR_DELAY'])
-#reader = pd.read_csv("data/2016_1.csv") 
 # set the flight of early arrival to zero
-
 mask = df['ARR_DELAY'] < 0
 df.loc[mask, 'ARR_DELAY'] = 0
 
+#group flights according to airline
 grp = df.groupby('AIRLINE_ID')
-#airline and their flights
 
 #1.  calculate the average delay for each flight
 '''
