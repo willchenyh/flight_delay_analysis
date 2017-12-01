@@ -82,3 +82,26 @@ def per_delay_distance():
     dis_flight = group.size()
     delay_dis = 100*dis_delay.div(dis_flight)
     return delay_dis
+
+def draw_bar_chart():
+    import matplotlib.pyplot as plt
+    from itertools import cycle, islice
+
+    #create the canvas
+    delay_hour = per_delay_hour()
+    fig = plt.figure()
+    d = dict()
+    colord = {}
+    for i in range(len(delay_hour.index)):
+        d[delay_hour.index[i]] = str(i) + ":00"
+        colord[delay_hour.index[i]] = 'r'
+    #plt.axhline(1, color='k')
+    delay_hour.rename(d, inplace = True)
+    #colors = {"0:00":"r"}
+    colors = ['b', 'g', 'r', 'c']*6
+
+    #my_colors = list(islice(cycle(colors), None, 24)) 
+    ax1 = delay_hour.plot(kind = "bar", color =   [plt.cm.Paired(np.arange(len(df)))]    )
+    ax1.set_ylim(0,100)
+    ax1.legend(" ",loc = 'upper center', title = "Time of day vs Delay Percentage")
+    plt.show()
