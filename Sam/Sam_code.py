@@ -51,10 +51,22 @@ def DelayRate_DayofYear(df):
 	days_of_year = range(1,366)
 	return days_of_year, delay_rates
 
+def DelayRate_States(df):
+	"""
+	Usage: Compute delay rates for each state.
+	Param: pandas dataframe of flight data 
+	Return: Delay rates for states in alphabetical order 
+	"""
+	flights_per_state = df['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
+	delays_per_state = df[df['DEP_DELAY']>15]['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
+	delay_rates = list(delays_per_state/flights_per_state)
+	return delay_rates 
+
 def main():
 	df = concat_data()
-	days_of_week, delay_rates = DelayRate_DayofWeek(df)
-	days_of_year, delay_rates = DelayRate_DayofYear(df)
+	# days_of_week, delay_rates = DelayRate_DayofWeek(df)
+	# days_of_year, delay_rates = DelayRate_DayofYear(df)
+	print DelayRate_States(df)
 
 if __name__ == '__main__':
 	main()
