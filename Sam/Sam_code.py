@@ -5,7 +5,7 @@
 
 The following plots are intended to be generated:
 
-1. Delay Rate vs Day of Week: Histogram
+1. Delay Rate vs Day of Week: Bar Chart 
 2. Delay Rate vs Day of Year: Stem Plot
 3. Delay Rate vs State: Colorbar and US Map
 """
@@ -62,11 +62,60 @@ def DelayRate_States(df):
 	delay_rates = list(delays_per_state/flights_per_state)
 	return delay_rates 
 
+def bar_chart(x,y,x_label,y_label,title):
+	"""
+	Usage: Plot a bot chart
+	Params: x and y axis data 
+	Return: nothing 
+	"""
+	import matplotlib.pyplot as plt
+	fig,ax = plt.subplots()
+
+	num_bars = range(1,len(y)+1)
+
+	ax.bar(num_bars,y)
+	ax.set_xticklabels(x)
+	ax.set_title(title)
+	ax.set_xlabel(x_label)
+	ax.set_ylabel(y_label)
+
+	print "Bar chart created..."
+	plt.show()
+
+def stem_plot(x,y,x_label,y_label,title):
+	"""
+	Usage: Plot a stem plot
+	Params: x and y axis data 
+	Return: nothing 
+	"""
+	import matplotlib.pyplot as plt
+	fig,ax = plt.subplots()
+
+	ax.stem(x,y)
+	ax.set_title(title)
+	ax.set_xlabel(x_label)
+	ax.set_ylabel(y_label)
+	plt.show()
+
+def colorbar_map(y):
+	pass
+
 def main():
+	# concatenate data into single pandas dataframe 
 	df = concat_data()
-	# days_of_week, delay_rates = DelayRate_DayofWeek(df)
-	# days_of_year, delay_rates = DelayRate_DayofYear(df)
-	print DelayRate_States(df)
+
+	# Compute and create dataframes for plotting 
+	days_of_week, delay_rates_week = DelayRate_DayofWeek(df)
+	print "Delay Rate vs Day of Week Data created..."
+	print delay_rates_week
+	# days_of_year, delay_rates_year = DelayRate_DayofYear(df)
+	# delay_rates_state = DelayRate_States(df)
+
+	# Create plots 
+	bar_chart(days_of_week,delay_rates_week,'Day of Week','Delay Rate',\
+		'Flight Delay Rate vs Day of Week in the US')
+
+
 
 if __name__ == '__main__':
 	main()
