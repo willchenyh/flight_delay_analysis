@@ -15,6 +15,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates 
 from datetime import date, datetime, timedelta
+import plotly as py 
+
 
 
 def concat_data():
@@ -81,16 +83,58 @@ def DelayRate_DayofYear(df):
 	ax.set_xlabel('Date')
 	ax.set_ylabel('Delay Rates')
 	plt.show()
+
 def DelayRate_States(df):
 	"""
 	Usage: Compute delay rates for each state.
 	Param: pandas dataframe of flight data 
 	Return: Delay rates for states in alphabetical order 
 	"""
+	
+	# Compute delay rates 
 	flights_per_state = df['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
 	delays_per_state = df[df['DEP_DELAY']>15]['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
 	delay_rates = list(delays_per_state/flights_per_state)
-	return delay_rates 
+	states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
+          "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
+          "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
+          "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
+          "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
+
+	# TODO: compute average delay time for each state
+
+	# Plot on US map with colorbar delay rate mapping to each state 
+	scl = [[0.0, 'rgb(242,240,247)'],[0.2, 'rgb(218,218,235)'],[0.4, 'rgb(188,189,220)'],\
+	            [0.6, 'rgb(158,154,200)'],[0.8, 'rgb(117,107,177)'],[1.0, 'rgb(84,39,143)']]
+
+	data = [ dict(
+	        type='choropleth',
+	        colorscale = scl,
+	        autocolorscale = False,
+	        locations = states,
+	        z = delay_rates,
+	        locationmode = 'USA-states',
+	        marker = dict(
+	            line = dict (
+	                color = 'rgb(0,0,0)',
+	                width = 1
+	            ) ),
+	        colorbar = dict(
+	            title = "Flight Delay Rate")
+	        ) ]
+
+	layout = dict(
+	        title = '2016 Flight Delay Rates vs State',
+	        geo = dict(
+	            scope='usa',
+	            projection=dict( type='albers usa' ),
+	            showlakes = True,
+	            lakecolor = 'rgb(255, 255, 255)'),
+	             )
+	    
+	fig = dict( data=data, layout=layout )
+	py.offline.plot( fig, filename='FlightDelayRateMap' )
+
 
 def date_range(start, end, delta):
 	"""
@@ -107,17 +151,10 @@ def main():
 	# concatenate data into single pandas dataframe 
 	df = concat_data()
 
-	# Compute and create dataframes for plotting 
-	# DelayRate_DayofWeek(df)
-	
-	DelayRate_DayofYear(df)
-
-	# delay_rates_state = DelayRate_States(df)
-
-	# TEMP 
-	# delay_rates_week = [0.1685126136994883, 0.15241291747445443, 0.14935836706571354, 0.18000958831102146, 0.18390870608729776, 0.1499100595809087, 0.16750093213413897]
-	# days_of_week = ['NA','MON','TUE','WED','THUR','FRI','SAT','SUN']
-
+	# Uncomment the plot you want 
+	DelayRate_DayofWeek(df)
+	# DelayRate_DayofYear(df)
+	# DelayRate_States(df)
 
 if __name__ == '__main__':
 	main()
