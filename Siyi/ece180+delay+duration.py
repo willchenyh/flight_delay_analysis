@@ -41,19 +41,22 @@ for i in range(20):
 delay_duration = pd.cut(df['ARR_DELAY'], interval)
 
 
-# In[24]:
+# In[47]:
 
 
 delay_duration_percentage = pd.concat([delay_duration], axis = 1).groupby('ARR_DELAY').size() / 5538145 * 100  
-delay_duration_percentage = pd.concat([delay_duration_percentage], axis = 1)
-delay_duration_percentage.columns = ["percentage of delay duration"]
-delay_duration_percentage
+#delay_duration_percentage = pd.concat([delay_duration_percentage], axis = 1)
+#delay_duration_percentage.columns = ["percentage of delay duration"]
+#delay_duration_percentage
 
 
-# In[25]:
+# In[54]:
 
 
 import matplotlib.pyplot as plt
-delay_duration_percentage.plot()
+get_ipython().magic(u'matplotlib inline')
+delay_duration_percentage.plot(figsize=(10,5))
+plt.xlabel('Delay Time / min') 
+plt.ylabel('Percentage / %')
 plt.show()
 
