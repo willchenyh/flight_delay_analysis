@@ -50,18 +50,15 @@ class SourceData(object):
                 month_total = selected.loc[(selected['MONTH'] == month) & (selected['UNIQUE_CARRIER'] == al)]
                 delays = month_total.loc[month_total['ARR_DELAY'] > 0]
 
-                num_delay = delays.groupby(['DEST']).size()
-                num_total = month_total.groupby(['DEST']).size()
-                delay_pc = num_delay.divide(num_total)
+                delay_avg = delays.groupby(['DEST'])['ARR_DELAY'].mean()
 
-                ap_used = list(delay_pc.index)
-
+                ap_used = list(delay_avg.index)
                 delay_ap = np.zeros((len(airports),))
                 for i, ap in enumerate(airports):
                     if ap in ap_used:
-                        delay_ap[i] = delay_pc[ap]
+                        delay_ap[i] = delay_avg[ap]
 
                 delay_m[month] = delay_ap
-
             delay_al[al] = delay_m
+
         return delay_al

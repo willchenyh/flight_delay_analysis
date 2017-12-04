@@ -1,6 +1,7 @@
-from bokeh.plotting import figure, show, curdoc
+from bokeh.plotting import figure, show, curdoc, output_file
 from bokeh.layouts import column, row
-from bokeh.models import ColumnDataSource, Select, Slider
+from bokeh.models import ColumnDataSource, Select, Slider, Range1d
+# from bokeh.io import output_file
 from bokeh.models.widgets import Dropdown
 import numpy as np
 
@@ -24,10 +25,12 @@ airlines = sd.carrier()
 source_info = sd.source_data()
 # print source_info
 
+output_file('bokeh_row_column_plot.html')
+
 # create the figure as usual
 p = figure(width=800, height=400, tools="save,pan",
            x_axis_label='Destination', y_axis_label='Delay Rate', title='Delay Rate for Flights Departing from SAN',
-           x_range=airports)
+           x_range=airports, y_range=Range1d(0,1))
 
 # add initial display data using the ColumnDataSource
 init_data = dict(x=airports, y=source_info['AA'][1])
