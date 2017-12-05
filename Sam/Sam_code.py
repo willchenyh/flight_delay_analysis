@@ -5,8 +5,8 @@
 
 The following plots are intended to be generated:
 
-1. Delay Rate vs Day of Week: Bar Chart 
-2. Delay Rate vs Day of Year: Stem Plot
+1. Delay Rate vs Day of Week: Overlapping Bar Chart 
+2. Delay Rate vs Day of Year: Bar Chart 
 3. Delay Rate vs State: Colorbar and US Map
 """
 
@@ -80,7 +80,7 @@ def DelayRate_DayofYear(df):
 	# Compute delay rates 
 	flights_per_day = df['FL_DATE'].value_counts(sort=False).sort_index()
 	delays_per_day = df[df['DEP_DELAY']>15]['FL_DATE'].value_counts(sort=False).sort_index()
-	delay_rates = list(delays_per_day/flights_per_day)
+	delay_rates = [rate*100 for rate in list(delays_per_day/flights_per_day)]
 
 	# Create range of dates for 2016 year 
 	dates = [day for day in date_range(date(2016,1,1),date(2016,12,31),\
@@ -90,14 +90,15 @@ def DelayRate_DayofYear(df):
 	fig,ax = plt.subplots()
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
 	plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
-	ax.bar(dates,delay_rates)
+	ax.bar(dates,delay_rates,zorder=3)
 
 	# Plot formatting 
+	ax.yaxis.grid(True,zorder=0)
 	plt.gcf().autofmt_xdate()
 	ax.set_xlim([date(2016,1,1), date(2016,12,31)])
-	ax.set_title('US Flight Delay Rates vs 2016 Year')
+	ax.set_title('US Flight Delay Rates vs Day of 2016')
 	ax.set_xlabel('Date')
-	ax.set_ylabel('Delay Rates')
+	ax.set_ylabel('Delay Rates (%)')
 	plt.show()
 
 def DelayRate_States(df):
@@ -110,7 +111,7 @@ def DelayRate_States(df):
 	# Compute delay rates 
 	flights_per_state = df['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
 	delays_per_state = df[df['DEP_DELAY']>15]['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
-	delay_rates = list(delays_per_state/flights_per_state)
+	delay_rates = [rate*100 for rate in list(delays_per_state/flights_per_state)]
 	states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DC", "DE", "FL", "GA", 
           "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", 
           "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
@@ -120,8 +121,8 @@ def DelayRate_States(df):
 	# TODO: compute average delay time for each state
 
 	# Plot on US map with colorbar delay rate mapping to each state 
-	scl = [[0.0, 'rgb(242,240,247)'],[0.2, 'rgb(218,218,235)'],[0.4, 'rgb(188,189,220)'],\
-	            [0.6, 'rgb(158,154,200)'],[0.8, 'rgb(117,107,177)'],[1.0, 'rgb(84,39,143)']]
+	scl = [[0.0, 'rgb(230,242,255)'],[0.2, 'rgb(179,215,255)'],[0.4, 'rgb(128,187,255)'],\
+	            [0.6, 'rgb(77,160,255)'],[0.8, 'rgb(26,133,255)'],[1.0, 'rgb(0,95,204)']]
 
 	data = [ dict(
 	        type='choropleth',
@@ -136,7 +137,7 @@ def DelayRate_States(df):
 	                width = 1
 	            ) ),
 	        colorbar = dict(
-	            title = "Flight Delay Rate")
+	            title = "Flight Delay Rate (%)")
 	        ) ]
 
 	layout = dict(
@@ -149,7 +150,7 @@ def DelayRate_States(df):
 	             )
 	    
 	fig = dict( data=data, layout=layout )
-	py.offline.plot( fig, filename='FlightDelayRateMap' )
+	py.offline.plot( fig, filename='FlightDelayRateMap.html' )
 
 
 def date_range(start, end, delta):
@@ -169,8 +170,8 @@ def main():
 
 	# Uncomment the plot you want 
 	DelayRate_DayofWeek(df)
-	# DelayRate_DayofYear(df)
-	# DelayRate_States(df)
+	DelayRate_DayofYear(df)
+	DelayRate_States(df)
 
 if __name__ == '__main__':
 	main()
