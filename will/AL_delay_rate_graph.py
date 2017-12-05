@@ -25,7 +25,7 @@ scatter = p.circle(x='x', y='y', size='size', source=source, color='navy', alpha
 
 def cb(attr, old, new):
     al = airport_select.value
-    m = month_select.value
+    m = int(month_select.value)
     y = source_info[al][m][0]
     size = source_info[al][m][1]
     d = dict(x=source.data['x'], y=y, size=size)
