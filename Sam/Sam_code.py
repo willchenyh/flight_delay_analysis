@@ -34,25 +34,40 @@ def concat_data():
 
 def DelayRate_DayofWeek(df):
 	"""
-	Usage: Plot delay rates vs day of week as bar chart 
+	Usage: Plot delay rates vs day of week as overlapping bar chart 
 	Param: pandas dataframe of flight data 
 	Return: nothing 
 	"""
 
-	# Compute delay rates 
-	flights_per_day = df['DAY_OF_WEEK'].value_counts(sort=False)
+	# Compute delays and flights per day
+	# Note: flights per day has delays subtracted so that when stacked using m
+	# 		matplotlib, an overlapping effect is implemented 
 	delays_per_day = df[df['DEP_DELAY']>15]['DAY_OF_WEEK'].value_counts(sort=False)
-	delay_rates = list(delays_per_day/flights_per_day)
+	flights_per_day = df['DAY_OF_WEEK'].value_counts(sort=False)-delays_per_day
+	delay_rates = [rate*100 for rate in list(delays_per_day/flights_per_day)]
 	days_of_week = ['NA','MON','TUE','WED','THUR','FRI','SAT','SUN']
 
 	# Plot bar chart 
 	fig,ax = plt.subplots()
-	num_bars = range(1,len(delay_rates)+1)
-	ax.bar(num_bars,delay_rates)
+	num_bars = range(1,8)
+	delays = ax.bar(num_bars, list(delays_per_day), color='blue',alpha=0.6)
+	flights = ax.bar(num_bars, list(flights_per_day), color='blue', bottom=delays_per_day)
+
+	# Add delay rate labels above bars
+	for delay,flight,delay_rate in zip(delays,flights,delay_rates):
+		height = flight.get_height() + delay.get_height()
+		ax.text(flight.get_x() + flight.get_width()/2., 1.02*height,
+		        str(round(delay_rate,1))+'%',
+		        ha='center', va='bottom')
+
+	# Plot formatting 
+	y_limits = ax.get_ylim()
+	ax.set_ylim([y_limits[0],1.05*y_limits[1]])
 	ax.set_xticklabels(days_of_week)
 	ax.set_title('US Flight Delay Rates vs Day of Week in 2016')
-	ax.set_xlabel('Delay Rates')
-	ax.set_ylabel('Day of Week')
+	ax.set_xlabel('Day of Week')
+	ax.set_ylabel('Number of Flights')
+	ax.legend((delays,flights),('Delayed Flights','Total Flights'))
 	plt.show()
 
 def DelayRate_DayofYear(df):
@@ -67,16 +82,17 @@ def DelayRate_DayofYear(df):
 	delays_per_day = df[df['DEP_DELAY']>15]['FL_DATE'].value_counts(sort=False).sort_index()
 	delay_rates = list(delays_per_day/flights_per_day)
 
-	# Plot bar chart 
-	fig,ax = plt.subplots()
-
 	# Create range of dates for 2016 year 
 	dates = [day for day in date_range(date(2016,1,1),date(2016,12,31),\
 			timedelta(days=1))] 
 
+	# Plot bar chart 
+	fig,ax = plt.subplots()
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
 	plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
 	ax.bar(dates,delay_rates)
+
+	# Plot formatting 
 	plt.gcf().autofmt_xdate()
 	ax.set_xlim([date(2016,1,1), date(2016,12,31)])
 	ax.set_title('US Flight Delay Rates vs 2016 Year')
