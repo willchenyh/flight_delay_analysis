@@ -69,13 +69,16 @@ per_late = num_late.loc[1] * 1.0 / num_delay.loc[15]
 #per_others = num_others.loc[15] * 1.0 / num_delay.loc[15]
 
 labels = 'Carrier', 'NAS', 'Weather', 'Security', 'Late aricraft'
-sizes = [per_carrier, per_nas, per_weather, per_secure, per_late]
-colors = ['gold',  'lightcoral', 'yellowgreen','black', 'purple']
-explode = (0, 0.1, 0, 0, 0)  # explode 1st slice
+sizes = [per_carrier, per_weather, per_nas, per_secure, per_late]
+colors = ['gold',  'yellowgreen', 'lightcoral','black', 'purple']
+explode = (0.1, 0, 0, 0, 0)  # explode 1st slice
  
 # Plot
+fig = plt.figure()
 plt.pie(sizes, explode=explode, labels=labels, colors=colors,
-        autopct='%1.1f%%', shadow=True, startangle=140)
+        autopct='%1.1f%%', shadow=False, startangle=140)
+plt.title("Delay Rate vs Causes")
  
 plt.axis('equal')
+fig.savefig("Image/bycause.png", bbox_inches = 'tight',  dpi= 400)
 plt.show()
