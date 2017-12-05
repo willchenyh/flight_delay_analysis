@@ -42,7 +42,7 @@ class SourceData(object):
         airports = self.dest()
         selected = san.loc[san['DEST'].isin(airports)]
         airlines = selected['UNIQUE_CARRIER'].unique()
-        return list(airlines)
+        return sorted(list(airlines))
 
     def source_data(self):
         san = self.data

@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-
 class SourceData(object):
 
     def __init__(self):
@@ -54,27 +53,26 @@ class SourceData(object):
         save data in a dict
         airline -> month -> (airports, size)
         """
-        delay_al = {}
-        for al in airlines:
+        delay_ap = {}
+        for ap in airports:
+            #     pc_list = []
             delay_m = {}
             for month in range(1, 13):
-                month_total = selected.loc[(selected['MONTH'] == month) & (selected['UNIQUE_CARRIER'] == al)]
-                delays = month_total.loc[month_total['ARR_DELAY'] > 14]
+                month_total = selected.loc[(selected['MONTH'] == month) & (selected['DEST'] == ap)]
+                delays = month_total.loc[month_total['ARR_DELAY'] > 0]
 
-                num_delay = delays.groupby(['DEST']).size()
-                num_total = month_total.groupby(['DEST']).size()
-                delay_pc = num_delay.divide(num_total)
+                delay_avg = delays.groupby(['UNIQUE_CARRIER'])['ARR_DELAY'].mean()
 
-                ap_used = list(delay_pc.index)
+                al_used = list(delay_avg.index)
 
-                delay_ap = np.zeros((len(airports),))
-                size_ap = np.zeros((len(airports),))
-                for i, ap in enumerate(airports):
-                    if ap in ap_used:
-                        delay_ap[i] = delay_pc[ap]
-                        size_ap[i] = 20
+                delay_al = np.zeros((len(airlines),))
+                size_al = np.zeros((len(airlines),))
+                for i, al in enumerate(airlines):
+                    if al in al_used:
+                        delay_al[i] = delay_avg[al]
+                        size_al[i] = 20
+                delay_m[month] = (delay_al, size_al)
 
-                delay_m[month] = (delay_ap, size_ap)
+            delay_ap[ap] = delay_m
 
-            delay_al[al] = delay_m
-        return delay_al
+        return delay_ap
