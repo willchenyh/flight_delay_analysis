@@ -6,8 +6,9 @@
 The following plots are intended to be generated:
 
 1. Delay Rate vs Day of Week: Overlapping Bar Chart 
-2. Delay Rate vs Day of Year: Bar Chart 
-3. Delay Rate vs State: Colorbar and US Map
+2. Delay Rate vs Day of Year: Bar Chart
+3. Number of Flights vs Day of Year: Bar Chart 
+4. Delay Rate vs State: Colorbar and US Map
 """
 
 import pandas as pd
@@ -17,12 +18,13 @@ import matplotlib.dates as mdates
 from datetime import date, datetime, timedelta
 import plotly as py 
 
-
-
 def concat_data():
 	"""
 	Usage: Concatenate all csv's (one for each month)
 	Return: pandas dataframe 
+	Note: CSVs must be in one directory up in "2016_data_new", this function
+		  is designed to be run as part of this script within github project 
+		  directories. 
 	"""
 	dflist = []
 	for i in range(1,13):
@@ -30,6 +32,7 @@ def concat_data():
 	    df = pd.read_csv(fn, index_col=0)
 	    dflist.append(df)
 	df = pd.concat(dflist, ignore_index=True)
+
 	return df 
 
 def DelayRate_DayofWeek(df):
@@ -38,6 +41,9 @@ def DelayRate_DayofWeek(df):
 	Param: pandas dataframe of flight data 
 	Return: nothing 
 	"""
+
+	# Check that input is pandas dataframe
+	assert isinstance(df, pd.DataFrame)
 
 	# Compute delays and flights per day
 	# Note: flights per day has delays subtracted so that when stacked using m
@@ -72,10 +78,13 @@ def DelayRate_DayofWeek(df):
 
 def DelayRate_DayofYear(df):
 	"""
-	Usage: Plot delay rates vs day of year as bar chart 
+	Usage: Plot two bar charts: delay rates and num of flights  
 	Param: pandas dataframe of flight data 
 	Return: nothing 
 	"""
+
+	# Check that input is pandas dataframe
+	assert isinstance(df, pd.DataFrame)
 
 	# Compute delay rates 
 	flights_per_day = df['FL_DATE'].value_counts(sort=False).sort_index()
@@ -86,7 +95,7 @@ def DelayRate_DayofYear(df):
 	dates = [day for day in date_range(date(2016,1,1),date(2016,12,31),\
 			timedelta(days=1))] 
 
-	# Plot bar chart 
+	# Plot bar chart for delay rates 
 	fig,ax = plt.subplots()
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
 	plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
@@ -101,12 +110,31 @@ def DelayRate_DayofYear(df):
 	ax.set_ylabel('Delay Rates (%)')
 	plt.show()
 
+	# Bar chart for number of flights per day 
+	fig,ax = plt.subplots()
+	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+	plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+	ax.bar(dates,flights_per_day,zorder=1)
+
+	# Plot formatting 
+	ax.yaxis.grid(True,zorder=0)
+	plt.gcf().autofmt_xdate()
+	ax.set_xlim([date(2016,1,1), date(2016,12,31)])
+	ax.set_title('Number of Flights per Day in 2016')
+	ax.set_xlabel('Date')
+	ax.set_ylabel('NUmber of Flights')
+	plt.show()	
+
 def DelayRate_States(df):
 	"""
-	Usage: Compute delay rates for each state.
+	Usage: Compute delay rates for each state, produces html code for plot
+		   and automatically opens in web browswer. 
 	Param: pandas dataframe of flight data 
-	Return: Delay rates for states in alphabetical order 
+	Return: nothing 
 	"""
+
+	# Check that input is pandas dataframe
+	assert isinstance(df, pd.DataFrame)
 	
 	# Compute delay rates 
 	flights_per_state = df['ORIGIN_STATE_NM'].value_counts(sort=False).sort_index()
@@ -117,8 +145,6 @@ def DelayRate_States(df):
           "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", 
           "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", 
           "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
-
-	# TODO: compute average delay time for each state
 
 	# Plot on US map with colorbar delay rate mapping to each state 
 	scl = [[0.0, 'rgb(230,242,255)'],[0.2, 'rgb(179,215,255)'],[0.4, 'rgb(128,187,255)'],\
@@ -159,6 +185,12 @@ def date_range(start, end, delta):
 	Param: start date, end date, time between each date generation
 	Return: range of dates 	
 	"""
+
+	# Check that inputs are correct type
+	assert isinstance(start,date)
+	assert isinstance(end,date)
+	assert isinstance(delta,timedelta)
+
 	cur = start
 	while cur <= end:
 	    yield cur
@@ -168,7 +200,7 @@ def main():
 	# concatenate data into single pandas dataframe 
 	df = concat_data()
 
-	# Uncomment the plot you want 
+	# Compute relevant features and generate plots 
 	DelayRate_DayofWeek(df)
 	DelayRate_DayofYear(df)
 	DelayRate_States(df)
