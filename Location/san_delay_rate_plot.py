@@ -24,9 +24,9 @@ source_info = sd.source_data()
 
 # create the figure
 p = figure(width=800, height=400, tools="save",
-           x_axis_label='Airline', y_axis_label='Average Delay Duration',
-           title='Delay Duration for Flights Departing from SAN',
-           x_range=airlines, y_range=Range1d(0, 100))
+           x_axis_label='Airline', y_axis_label='Average Delay Rate',
+           title='Delay Rate for Flights Departing from SAN',
+           x_range=airlines, y_range=Range1d(0, 1))
 
 # add initial display data using the ColumnDataSource
 init_data = dict(x=airlines, y=source_info['ATL'][1][0], size=source_info['ATL'][1][1])
