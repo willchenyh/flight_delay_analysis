@@ -4,7 +4,8 @@
 
 **Overview**
 * The purpose of this project is to extract useful statistics regarding flight delays in 2016 and create meaningful visualizations for the results.
-* We approached the problem from three angles: Airlines, Time, and Location. Our code is organized in this manner.
+* This project contains three parts: Airlines, Time, and Location. Our code is organized in this manner.
+* Project Proposal and Presentations are also in this repo.
 
 **Source of Data**
 * Department of Transportation 
