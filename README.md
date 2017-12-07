@@ -12,9 +12,9 @@ Team members: Jinhao Tang, Sam Vineyard, Yuhan Chen, Siyi Wang, Zexi Chen
 **Software Prerequisites**
 * Python 2.7
 * Libraries used:
-- Numpy
-- Pandas
-- Matplotlib
-- Seaborn
-- Bokeh
-- Plotly
+ - Numpy
+ - Pandas
+ - Matplotlib
+ - Seaborn
+ - Bokeh
+ - Plotly
