@@ -26,8 +26,6 @@ from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.io import curdoc, show
 from bokeh.plotting import figure, curdoc
 from bokeh.models import ColumnDataSource, Range1d
-from san_delay_rate_source import *
-from san_delay_duration_source import *
 
 
 DELAY_THR = 15
