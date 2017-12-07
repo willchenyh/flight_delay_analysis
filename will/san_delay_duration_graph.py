@@ -1,3 +1,7 @@
+"""
+This program will plot an interactive graph with bokeh on flight delay duration for flights departing from SAN
+"""
+
 from bokeh.plotting import figure, show, curdoc, output_file
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, Select, Slider, Range1d
@@ -51,4 +55,3 @@ dt = DataTable(source=tb_source, columns=columns, width=250, height=600)
 params = row(airport_select, month_select, )
 plot_layout = column(p, params)
 curdoc().add_root(row(dt, plot_layout))
-

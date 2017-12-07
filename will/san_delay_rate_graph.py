@@ -1,3 +1,7 @@
+"""
+This program will plot an interactive graph with bokeh on flight delay rate for flights departing from SAN
+"""
+
 from bokeh.plotting import figure, show, curdoc, output_file
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, Select, Slider, Range1d
