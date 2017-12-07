@@ -1,4 +1,5 @@
 """
+@author Yuhan Chen
 This program will plot two maps of airports, for flight delay rates and durations.
 """
 
@@ -19,7 +20,7 @@ loc = {'ATL':(-84.4,33.6), 'BOS':(-71,42.4), 'BWI':(-76.7,39.2), 'CLT':(-80.9,35
 
 def get_data(path):
     """
-    concatenate data to a pandas dataframe
+    Usage: concatenate data to a pandas dataframe
     :param path: path where flight delay data is stored
     :return: pandas dataframe
     """
@@ -35,7 +36,7 @@ def get_data(path):
 
 def plot_map(delays):
     """
-    plot delay rate or delay duration for each airport
+    Usage: plot delay rate or delay duration for each airport
     :param delays: pandas series of delay rates/durations for each airport
     :return: none
     """

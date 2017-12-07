@@ -1,4 +1,5 @@
 """
+@author Yuhan Chen
 This module contains a SourceData class.
 """
 
@@ -78,10 +79,8 @@ class SourceData(object):
         airports = self.dest()
         selected = san.loc[san['DEST'].isin(airports)]
         airlines = self.carrier()
-        """
-        save data in a dict
-        airport -> month -> (airlines, size)
-        """
+
+        # save data in a dict, airport -> month -> (airlines, size)
         delay_ap = {}
         for ap in airports:
             delay_m = {}
