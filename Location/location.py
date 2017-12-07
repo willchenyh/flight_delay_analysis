@@ -10,8 +10,6 @@ The following plots are intended to be generated:
 2. Delay Rate vs Distance: Bar Chart
 3. Delay Rate/Delay Duration vs Airport: Map
 4. Delay Rate/Delay Duration vs State/Month: Map with Slider
-5.Delay Rate vs Flights From San Diego: Chart with Slider
-6. Delay Rate vs Flights From San Diego: Chart with Slider
 """
 import pandas as pd
 import numpy as np
@@ -284,122 +282,19 @@ def PercentageMean_MonthMap(df):
     for num in range(1,13):
         df_month = df.groupby('MONTH').get_group(num)
         fig = PercentageMean_map(df_month, False)
-        fig.savefig("../Visuliazation_Plots/Location/month" + str(num) + "_map.png", bbox_inches = 'tight',  dpi= 400) 
-
-def DelayRate_San():
-    """
-	Usage: Calculate the delay rate for each flight flew from San Diego
-	Return: None
-    """
-    sd = SourceData()
-    airports = sd.dest()
-    airlines = sd.carrier()
-    cities = sd.cities()
-    source_info = sd.source_data()
-    
-    # create the figure
-    p = figure(width=800, height=400, tools="save",
-               x_axis_label='Airline', y_axis_label='Average Delay Duration',
-               title='Delay Duration for Flights Departing from SAN',
-               x_range=airlines, y_range=Range1d(0, 100))
-    
-    # add initial display data using the ColumnDataSource
-    init_data = dict(x=airlines, y=source_info['ATL'][1][0], size=source_info['ATL'][1][1])
-    source = ColumnDataSource(data=init_data)
-    scatter = p.circle(x='x', y='y', size='size', source=source, color='navy', alpha=0.7)
-    
-    def cb(attr, old, new):
-        al = airport_select.value
-        m = month_select.value
-        y = source_info[al][m][0]
-        size = source_info[al][m][1]
-        d = dict(x=source.data['x'], y=y, size=size)
-        source.data.update(d)
-    
-    # add interactive tools
-    airport_select = Select(value='ATL', title='Destination', options=airports)
-    month_select = Slider(start=1, end=12, value=1, step=1, title='Month')
-    airport_select.on_change('value', cb)
-    month_select.on_change('value', cb)
-    
-    # add table
-    ap = airports
-    ct = cities
-    tb_data = dict(a=ap, b=ct)
-    tb_source = ColumnDataSource(tb_data)
-    columns = [
-        TableColumn(field='a', title='Airport', ),
-        TableColumn(field='b', title='City', ),
-    ]
-    dt = DataTable(source=tb_source, columns=columns, width=250, height=600)
-    
-    params = row(airport_select, month_select, )
-    plot_layout = column(p, params)
-    curdoc().add_root(row(dt, plot_layout))
-    
-def DelayDuration_San():
-    """
-	Usage: Calculate the duration for each flight flew from San Diego
-	Return: None
-    """
-    sd = SourceData()
-    airports = sd.dest()
-    airlines = sd.carrier()
-    cities = sd.cities()
-    source_info = sd.source_data()
-    
-    # create the figure
-    p = figure(width=800, height=400, tools="save",
-               x_axis_label='Airline', y_axis_label='Average Delay Duration',
-               title='Delay Duration for Flights Departing from SAN',
-               x_range=airlines, y_range=Range1d(0, 100))
-    
-    # add initial display data using the ColumnDataSource
-    init_data = dict(x=airlines, y=source_info['ATL'][1][0], size=source_info['ATL'][1][1])
-    source = ColumnDataSource(data=init_data)
-    scatter = p.circle(x='x', y='y', size='size', source=source, color='navy', alpha=0.7)
-    
-    def cb(attr, old, new):
-        al = airport_select.value
-        m = month_select.value
-        y = source_info[al][m][0]
-        size = source_info[al][m][1]
-        d = dict(x=source.data['x'], y=y, size=size)
-        source.data.update(d)
-    
-    # add interactive tools
-    airport_select = Select(value='ATL', title='Destination', options=airports)
-    month_select = Slider(start=1, end=12, value=1, step=1, title='Month')
-    airport_select.on_change('value', cb)
-    month_select.on_change('value', cb)
-    
-    # add table
-    ap = airports
-    ct = cities
-    tb_data = dict(a=ap, b=ct)
-    tb_source = ColumnDataSource(tb_data)
-    columns = [
-        TableColumn(field='a', title='Airport', ),
-        TableColumn(field='b', title='City', ),
-    ]
-    dt = DataTable(source=tb_source, columns=columns, width=250, height=600)
-    
-    params = row(airport_select, month_select, )
-    plot_layout = column(p, params)
-    curdoc().add_root(row(dt, plot_layout))
+        fig.savefig("../Visuliazation_Plots/Location/month" + str(num) + "_map.png", bbox_inches = 'tight',  dpi= 400)
 
 
 def main():
-	#concatenate data into single pandas dataframe 
-	df = concat_data()
-	# Compute relevant features and generate plots 
-	DelayRate_States(df)
-	DelayRate_Distance(df)
-	PercentageMean_map(df, True)    
-	PercentageMean_MonthMap(df)
-	PercentageMean_MonthInteractionMap()
-	DelayRate_San()    
-	DelayDuration_San()     
-       
+    #concatenate data into single pandas dataframe
+    df = concat_data()
+    # Compute relevant features and generate plots
+    DelayRate_States(df)
+    DelayRate_Distance(df)
+    PercentageMean_map(df, True)
+    PercentageMean_MonthMap(df)
+    PercentageMean_MonthInteractionMap()
+
+
 if __name__ == '__main__':
 	main()
