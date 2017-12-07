@@ -1,7 +1,0 @@
-============
-group
-============
-pd.groupby([cols])
-pd.groupby([cols]).size()
-pd.groupby([cols]).size().sort_values()
-df.index

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+
 class SourceData(object):
 
     def __init__(self):
@@ -11,7 +12,7 @@ class SourceData(object):
         """concatenate data"""
         dflist = []
         for i in range(1, 13):
-            fn = '../2016_data_new/2016_{}_new.csv'.format(i)
+            fn = '../2016_data/2016_{}_new.csv'.format(i)
             df = pd.read_csv(fn, index_col=0)
             dflist.append(df)
         df = pd.concat(dflist, ignore_index=True)
