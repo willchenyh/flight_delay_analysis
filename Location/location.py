@@ -393,13 +393,13 @@ def main():
 	#concatenate data into single pandas dataframe 
 	df = concat_data()
 	# Compute relevant features and generate plots 
-	DelayRate_States(df)
-	DelayRate_Distance(df)
-	PercentageMean_map(df, True)    
-	PercentageMean_MonthMap(df)
+	#DelayRate_States(df)
+	#DelayRate_Distance(df)
+	#PercentageMean_map(df, True)    
+	#PercentageMean_MonthMap(df)
 	PercentageMean_MonthInteractionMap()
-	DelayRate_San()    
-	DelayDuration_San()     
+	#DelayRate_San()    
+	#DelayDuration_San()     
        
 if __name__ == '__main__':
 	main()
