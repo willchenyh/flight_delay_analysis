@@ -11,7 +11,7 @@ Team members: Jinhao Tang, Sam Vineyard, Yuhan Chen, Siyi Wang, Zexi Chen
 * **2016_data_new**: Data of flight information of 12 months from year 2016.
 * **Airline**: Code for plotting delay information regarding airlines.
 * **Time**: Code for plotting delay information regarding time variables (hour of day, day of week, day of year, and month).
-* **Location**: Code for plotting delay information regarding location variables (state map, airport map, and SAN).
+* **Location**: Code for plotting delay information regarding location variables (state map, airport map, and SAN airport).
 * **Visualization plot**: Some plots created from the data.
 * **Project Proposal**
 * **Final Presentation**
