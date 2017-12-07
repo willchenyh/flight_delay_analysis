@@ -284,29 +284,16 @@ def PercentageMean_MonthMap(df):
 
 
 def main():
-<<<<<<< HEAD
+
 	#concatenate data into single pandas dataframe 
 	df = concat_data()
 	# Compute relevant features and generate plots 
-	#DelayRate_States(df)
-	#DelayRate_Distance(df)
-	#PercentageMean_map(df, True)    
-	#PercentageMean_MonthMap(df)
+	DelayRate_States(df)
+	DelayRate_Distance(df)
+	PercentageMean_map(df, True)    
+	PercentageMean_MonthMap(df)
 	PercentageMean_MonthInteractionMap()
-	#DelayRate_San()    
-	#DelayDuration_San()     
-       
-=======
-    #concatenate data into single pandas dataframe
-    df = concat_data()
-    # Compute relevant features and generate plots
-    DelayRate_States(df)
-    DelayRate_Distance(df)
-    PercentageMean_map(df, True)
-    PercentageMean_MonthMap(df)
-    PercentageMean_MonthInteractionMap()
 
 
->>>>>>> 3bdd1565e4a29b1b21fa8fb2be184b2c7a631d36
 if __name__ == '__main__':
 	main()
