@@ -62,7 +62,7 @@ plt.xlabel("Month")
 plt.ylabel("Delay Rate")
   
 plt.show() 
-###############################################################################
+
 def compute_delay_cause_time(df):
     #df = grp_delay.get_group(1)
 
@@ -88,7 +88,7 @@ def compute_delay_cause_time(df):
     late_delay_time_sum = late_delay_time.sum()
     
     return carrier_delay_time_sum, weather_delay_time_sum, nas_delay_time_sum, security_delay_time_sum, late_delay_time_sum
-###############################################################################
+
 carrier_delay_time_sum = []
 weather_delay_time_sum = []
 nas_delay_time_sum = []
@@ -113,7 +113,6 @@ for i in range(12):
     bottom_security.append(a+b+c)
     bottom_late.append(a+b+c+d)
 
-###############################################################################
 fig = plt.figure()
 interval = range(12)
 width = 0.35 
@@ -141,58 +140,38 @@ plt.show()
 
 
 
-###############################################################################
 plt.figure()
 x=np.array(df['ARR_DELAY'])
 y=np.array(df['CARRIER_DELAY'])
 T=np.arctan2(x,y)
 plt.scatter(x,y,c=T,s=25,alpha=0.4,marker='o')
-#T:散点的颜色
-#s：散点的大小
-#alpha:是透明程度
 fig.savefig("1.png", bbox_inches = 'tight', dpi= 400)
 plt.show()
-###############################################################################
 plt.figure()
 x=np.array(df['ARR_DELAY'])
 y=np.array(df['WEATHER_DELAY'])
 T=np.arctan2(x,y)
 plt.scatter(x,y,c=T,s=25,alpha=0.4,marker='o')
-#T:散点的颜色
-#s：散点的大小
-#alpha:是透明程度
 fig.savefig("2.png", bbox_inches = 'tight', dpi= 400)
 plt.show()
-###############################################################################
 plt.figure()
 x=np.array(df['ARR_DELAY'])
 y=np.array(df['NAS_DELAY'])
 T=np.arctan2(x,y)
 plt.scatter(x,y,c=T,s=25,alpha=0.4,marker='o')
-#T:散点的颜色
-#s：散点的大小
-#alpha:是透明程度
 fig.savefig("3.png", bbox_inches = 'tight', dpi= 400)
 plt.show()
-###############################################################################
 plt.figure()
 x=np.array(df['ARR_DELAY'])
 y=np.array(df['SECURITY_DELAY'])
 T=np.arctan2(x,y)
 plt.scatter(x,y,c=T,s=25,alpha=0.4,marker='o')
-#T:散点的颜色
-#s：散点的大小
-#alpha:是透明程度
 fig.savefig("4.png", bbox_inches = 'tight', dpi= 400)
 plt.show()
-###############################################################################
 plt.figure()
 x=np.array(df['ARR_DELAY'])
 y=np.array(df['LATE_AIRCRAFT_DELAY'])
 T=np.arctan2(x,y)
 plt.scatter(x,y,c=T,s=25,alpha=0.4,marker='o')
-#T:散点的颜色
-#s：散点的大小
-#alpha:是透明程度
 fig.savefig("5.png", bbox_inches = 'tight', dpi= 400)
 plt.show()
