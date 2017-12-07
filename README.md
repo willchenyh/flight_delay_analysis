@@ -1,6 +1,6 @@
 # Flight Delay Analysis
-ECE 180 Project, Fall 2017
-Team members: Jinhao Tang, Sam Vineyard, Yuhan Chen, Siyi Wang, Zexi Chen
+- ECE 180 Project, Fall 2017
+- Team members: Jinhao Tang, Sam Vineyard, Yuhan Chen, Siyi Wang, Zexi Chen
 
 **Overview**
 * The purpose of this project is to extract useful statistics regarding flight delays in 2016 and create meaningful visualizations for the results.
